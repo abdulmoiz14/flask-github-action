@@ -22,4 +22,5 @@ jobs:
         run: docker build . --file dockerfile --tag web
       - name: run container
         run: docker run -d -p 8080:8080 web
-
+      - name: docker logs
+        run: docker container logs
