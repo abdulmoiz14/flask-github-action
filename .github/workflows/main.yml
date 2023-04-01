@@ -10,7 +10,7 @@ jobs:
       - name: Checkout code
         uses: actions/checkout@v3
       - name: Set up Python
-        uses: actions/setup-python@v2
+        uses: actions/setup-python@v3
         with:
           python-version: 3.x
 
@@ -21,5 +21,5 @@ jobs:
       - name: build image
         run: docker build . --file dockerfile --tag web
       - name: run container
-        run: docker run -p 8080:8080 web
+        run: docker run -d -p 8080:8080 web
 
