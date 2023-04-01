@@ -19,7 +19,7 @@ jobs:
           python -m pip install --upgrade pip
           pip install -r requirements.txt
       - name: build image
-        run: docker build . --file dockerfile --tag web:v1
+        run: docker build . --file dockerfile --tag web
       - name: run container
-        run: docker run -it web:v1
+        run: docker run -it web
 
