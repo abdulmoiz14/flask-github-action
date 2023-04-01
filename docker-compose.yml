@@ -1,0 +1,41 @@
+version: "3.9"
+networks:
+  my_network:
+    driver: bridge
+
+services:
+  web:
+    build: .
+    #8080-9090 this will alocate different port to every instance of web.
+    ports:
+      - "8080-8090:8080"
+    depends_on:
+      - db
+    networks:
+      - my_network
+    environment:
+      DATABASE_URL: postgres://myuser:mysecretpassword@db:5432/mydb
+    #this will create multiple instance of web service
+    deploy:
+      replicas: 3
+  
+  grafana:
+    image: grafana/grafana
+    ports:
+      - "3000:3000"
+    volumes:
+      - grafana-data:/var/lib/grafana
+
+
+  db:
+    build: ./db
+    ports:
+      - "5432:5432"
+    networks:
+      - my_network
+    volumes:
+      - db_data:/var/lib/postgresql/data
+
+volumes:
+  db_data:
+  grafana-data:

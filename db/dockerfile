@@ -1,0 +1,10 @@
+
+FROM postgres:13-alpine
+
+ENV POSTGRES_PASSWORD=mysecretpassword
+ENV POSTGRES_USER=myuser
+ENV POSTGRES_DB=mydb
+
+
+#Create a backup of db_data
+Run --rm -v db_data:/volume -v $(pwd):/backup alpine tar -czvf /backup/db-backup.tar.gz /volume
