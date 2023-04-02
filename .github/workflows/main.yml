@@ -23,6 +23,8 @@ jobs:
         run: docker build . --file dockerfile --tag web
       - name: run container
         run: docker run  -p 8080:8080 web sleep 60
+        
+        
   postrges_build:
     runs-on: ubuntu-latest
     steps:
