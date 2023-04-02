@@ -21,8 +21,6 @@ jobs:
           pip install -r requirements.txt
       - name: build image
         run: docker build . --file dockerfile --tag web
-      - name: run container
-        run: docker run  -p 8080:8080 web
         
         
   postrges_build:
@@ -49,4 +47,4 @@ jobs:
         env:
           VALIDATE_ALL_CODEBASE: false
           DEFAULT_BRANCH: main
-          GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
+          GITHUB_TOKEN: ${{ secrets.TOKEN }}
