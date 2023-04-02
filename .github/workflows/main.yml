@@ -34,4 +34,4 @@ jobs:
         with:
           postgresql_version: 'alpine3.17' 
       - name: build image
-        run: docker build . --file dockerfile --tag postgres_db
+        run: docker build . --file db/dockerfile --tag postgres_db
