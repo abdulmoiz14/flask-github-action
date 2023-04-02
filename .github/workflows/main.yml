@@ -23,10 +23,6 @@ jobs:
         run: docker build . --file dockerfile --tag web
       - name: run container
         run: docker run -d -p 8080:8080 web
-      - name: list
-        run: docker ps 
-      - name: docker logs
-        run: docker container logs -f web
   postrges_build:
     runs-on: ubuntu-latest
     steps:
