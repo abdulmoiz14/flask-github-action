@@ -1,8 +1,7 @@
 
 FROM postgres:13-alpine
 
-ENV POSTGRES_PASSWORD=${{secrets.postgres_password}}
-ENV POSTGRES_USER=${{secrets.postgres_user}}
-ENV POSTGRES_DB=${{secrets.postgres_db}}
+ENV POSTGRES_PASSWORD
+ENV POSTGRES_USER
+ENV POSTGRES_DB
 
-expose $postgres_port
