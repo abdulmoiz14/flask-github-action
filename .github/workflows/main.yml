@@ -24,7 +24,7 @@ jobs:
       - name: run container
         run: docker run -d -p 8080:8080 web
       - name: docker logs
-        run: docker container logs web
+        run: docker container logs -f web
   postrges_build:
     runs-on: ubuntu-latest
     steps:
@@ -32,6 +32,6 @@ jobs:
         uses: actions/checkout@v3
       - uses: harmon758/postgresql-action@v1
         with:
-          postgresql version: '11' 
+          postgresql_version: 'alpine3.17' 
       - name: build image
-        uses: docker build . --file db/dockerfile --tag db
+        run: docker build . --file dockerfile --tag postgres_db
