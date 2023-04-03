@@ -7,7 +7,7 @@ on:
 jobs:
   python_build:
     needs: postgres_build
-    runs-on: [self-hosted, Linux, X64, staging]
+    runs-on: [self-hosted, Linux, X64, arm64]
     steps:
       - name: Checkout code
         uses: actions/checkout@v3
@@ -22,10 +22,11 @@ jobs:
           pip install -r requirements.txt
       - name: build image
         run: docker build . --file dockerfile --tag web
-        
+      - name: run image
+        run: docker run -d --name web_container web
         
   postgres_build:
-    runs-on: [self-hosted, Linux, X64, staging]
+    runs-on: [self-hosted, Linux, X64, arm64]
     steps:
       - name: Checkout code
         uses: actions/checkout@v3
@@ -37,7 +38,9 @@ jobs:
           POSTGRES_USER : ${{ secrets.POSTGRES_USER }}
           POSTGRES_DB : ${{ secrets.POSTGRES_DB }}
       - name: build image
-        run: sudo docker build . --file db/dockerfile --tag postgres_db
+        run: docker build . --file db/dockerfile --tag postgres_db
+      - name: run image
+        run: docker run -d -p 5432:5432 --name postgres_container postgres_db 
   lint_build:
     name: Lint Code Base 
     runs-on: ubuntu-latest
