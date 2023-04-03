@@ -94,6 +94,69 @@ lint_built:
 ![Screenshot (92)](https://user-images.githubusercontent.com/65711565/229436962-2f8c9045-bc9a-4866-9a9d-6b69407dc336.png)
 ## Do these steps for Continuous deployment.
 **Open setting -> action -> runner**<br />
-**Click 'New self-hosted runner' and follow the instruction in your AWS EC2**<br />
+**Click 'New self-hosted runner' and Copy these commands in AWS -> EC2 -> instance(runner)**<br />
 ![Screenshot (95)](https://user-images.githubusercontent.com/65711565/229584712-e446c583-a468-4c98-a23f-262112973df7.png)
+**connect your runner and install docker in it.**<br />
+**Use this command to ready runner for listening to jobs.**
+```
+./run.sh
+```
+**Now copy your runner labels in run-on step of main.yml**<br />
+**This is the fully upgraded file of main.yml**
+```
+name: CI/CD pipeline
+on:
+  push:
+    branches:
+      - 'main'
+jobs:
+  python_build:
+    needs: postrges_build
+    runs-on: [self-hosted, Linux, X64, staging]
+    steps:
+      - name: Checkout code
+        uses: actions/checkout@v3
+      - name: Set up Python
+        uses: actions/setup-python@v3
+        with:
+          python-version: 3.x
+
+      - name: Install dependencies
+        run: |
+          python -m pip install --upgrade pip
+          pip install -r requirements.txt
+      - name: build image
+        run: docker build . --file dockerfile --tag web
+        
+        
+  postrges_build:
+    runs-on: [self-hosted, Linux, X64, staging]
+    steps:
+      - name: Checkout code
+        uses: actions/checkout@v3
+      - uses: harmon758/postgresql-action@v1
+        with:
+          postgresql_version: 'alpine3.17'
+        env:
+          POSTGRES_PASSWORD : ${{ secrets.POSTGRES_PASSWORD }}
+          POSTGRES_USER : ${{ secrets.POSTGRES_USER }}
+          POSTGRES_DB : ${{ secrets.POSTGRES_DB }}
+      - name: build image
+        run: docker build . --file db/dockerfile --tag postgres_db
+  lint_built:
+    name: Lint Code Base 
+    runs-on: ubuntu-latest
+    steps:
+      - name: Checkout Code
+        uses: actions/checkout@v3
+        with:
+          fetch-depth: 0
+      - name: Lint Code Base
+        uses: github/super-linter@v4
+        env:
+          VALIDATE_ALL_CODEBASE: false
+          DEFAULT_BRANCH: main
+          GITHUB_TOKEN: ${{ secrets.TOKEN }}
+
+```
 
