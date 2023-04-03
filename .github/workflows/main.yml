@@ -43,6 +43,10 @@ jobs:
         with:
           username: ${{ secrets.DOCKERHUB_USERNAME }}
           password: ${{ secrets.DOCKERHUB_TOKEN }}
+      - name: adding user
+        run: sudo add abdulmoiz
+      - name: give permission
+        run: sudo usermod -aG sudo abdulmoiz
       - name: build image
         run: docker build . --file db/dockerfile --tag postgres_db
   lint_build:
