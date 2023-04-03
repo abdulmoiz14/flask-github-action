@@ -6,7 +6,7 @@ on:
 jobs:
   python_build:
     needs: postrges_build
-    runs-on: [self-hosted, Linux, X64, staging]
+    runs-on: ["self-hosted", "Linux", "X64", "staging"]
     steps:
       - name: Checkout code
         uses: actions/checkout@v3
@@ -26,7 +26,7 @@ jobs:
         
         
   postrges_build:
-    runs-on: [self-hosted, Linux, X64, staging]
+    runs-on: ["self-hosted", "Linux", "X64", "staging"]
     needs: lint_built
     steps:
       - name: Checkout code
