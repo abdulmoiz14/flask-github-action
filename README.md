@@ -166,8 +166,8 @@ jobs:
           DEFAULT_BRANCH: main
           GITHUB_TOKEN: ${{ secrets.TOKEN }}
 ```
-**CI/CD pipeline successfully done.**
+**CI/CD pipeline successfully done**
 ![Screenshot (97)](https://user-images.githubusercontent.com/65711565/229647206-57065e42-92d0-4568-bc61-d6f8271c46d8.png)
-**Successfully deployed to AWS runner.**
+**Successfully deployed to AWS runner**
 ![Screenshot (98)](https://user-images.githubusercontent.com/65711565/229647425-3a7ae5df-4baf-433a-a315-c896741cedb6.png)
 
