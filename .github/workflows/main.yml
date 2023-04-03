@@ -19,12 +19,15 @@ jobs:
         run: |
           python -m pip install --upgrade pip
           pip install -r requirements.txt
+      - name: Grant Docker Permissions
+        run: sudo usermod -aG docker $USER newgrp docker
       - name: build image
         run: docker build . --file dockerfile --tag web
         
         
   postrges_build:
     runs-on: [self-hosted, Linux, X64, staging]
+    needs: lint_built
     steps:
       - name: Checkout code
         uses: actions/checkout@v3
@@ -35,6 +38,8 @@ jobs:
           POSTGRES_PASSWORD : ${{ secrets.POSTGRES_PASSWORD }}
           POSTGRES_USER : ${{ secrets.POSTGRES_USER }}
           POSTGRES_DB : ${{ secrets.POSTGRES_DB }}
+      - name: Grant Docker Permissions
+        run: sudo usermod -aG docker $USER newgrp docker
       - name: build image
         run: docker build . --file db/dockerfile --tag postgres_db
   lint_built:
