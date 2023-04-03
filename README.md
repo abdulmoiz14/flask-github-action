@@ -46,10 +46,13 @@ jobs:
           pip install -r requirements.txt
       - name: build image
         run: docker build . --file dockerfile --tag web
+      - name: run image
+        run: docker run  --name web_container1 web sleep 100
 ```
 ### Add dockerfile for postgres and edit in it.
 ```
 FROM postgres:13-alpine
+EXPOSE 5432
 ```
 ### Now add postgres job in main.yml.
 ```
@@ -62,19 +65,19 @@ FROM postgres:13-alpine
         with:
           postgresql_version: 'alpine3.17'
         env:
-          #use secrets to database credentials
-          POSTGRES_PASSWORD: ${{ secrets.POSTGRES_PASSWORD }}
-          POSTGRES_USER: ${{ secrets.POSTGRES_USER }}
-          POSTGRES_DB: ${{ secrets.POSTGRES_DB }}
+          POSTGRES_PASSWORD : ${{ secrets.POSTGRES_PASSWORD }}
+          POSTGRES_USER : ${{ secrets.POSTGRES_USER }}
+          POSTGRES_DB : ${{ secrets.POSTGRES_DB }}
       - name: build image
         run: docker build . --file db/dockerfile --tag postgres_db
+      - name: run image
+        run: docker run -d -p 5432:5432 --name postgres_container1 postgres_db
 ```
 **Add POSTGRES_PASSWORD,POSTGRES_USER and POSTGRES_DB in secret variable of action in setting of the project repository.**
 ### Use super linter job in main.yml for unit testing.
 ```
 lint_built:
-    name: Lint Code Base
-    needs: python_build  
+    name: Lint Code Base 
     runs-on: ubuntu-latest
     steps:
       - name: Checkout Code
@@ -109,10 +112,11 @@ on:
   push:
     branches:
       - 'main'
+      
 jobs:
   python_build:
-    needs: postrges_build
-    runs-on: [self-hosted, Linux, X64, staging]
+    needs: lint_build
+    runs-on: [self-hosted, Linux, X64, arm64]
     steps:
       - name: Checkout code
         uses: actions/checkout@v3
@@ -127,10 +131,12 @@ jobs:
           pip install -r requirements.txt
       - name: build image
         run: docker build . --file dockerfile --tag web
+      - name: run image
+        run: docker run  --name web_container1 web sleep 100
         
-        
-  postrges_build:
-    runs-on: [self-hosted, Linux, X64, staging]
+  postgres_build:
+    runs-on: [self-hosted, Linux, X64, arm64]
+    needs: lint_build
     steps:
       - name: Checkout code
         uses: actions/checkout@v3
@@ -143,7 +149,9 @@ jobs:
           POSTGRES_DB : ${{ secrets.POSTGRES_DB }}
       - name: build image
         run: docker build . --file db/dockerfile --tag postgres_db
-  lint_built:
+      - name: run image
+        run: docker run -d -p 5432:5432 --name postgres_container1 postgres_db sleep 100
+  lint_build:
     name: Lint Code Base 
     runs-on: ubuntu-latest
     steps:
@@ -157,6 +165,9 @@ jobs:
           VALIDATE_ALL_CODEBASE: false
           DEFAULT_BRANCH: main
           GITHUB_TOKEN: ${{ secrets.TOKEN }}
-
 ```
+**CI/CD pipeline successfully done.**
+![Screenshot (97)](https://user-images.githubusercontent.com/65711565/229647206-57065e42-92d0-4568-bc61-d6f8271c46d8.png)
+**Successfully deployed to AWS runner.**
+![Screenshot (98)](https://user-images.githubusercontent.com/65711565/229647425-3a7ae5df-4baf-433a-a315-c896741cedb6.png)
 
