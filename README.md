@@ -92,4 +92,8 @@ lint_built:
 **Add TOKEN in secret variable of action in setting of the project repository.**<br />
 **Continuous Integration successfully integrated.**<br />
 ![Screenshot (92)](https://user-images.githubusercontent.com/65711565/229436962-2f8c9045-bc9a-4866-9a9d-6b69407dc336.png)
-## Do these steps for Continuous deployment
+## Do these steps for Continuous deployment.
+**Open setting -> action -> runner**<br />
+**Click 'New self-hosted runner' and follow the instruction in your AWS EC2**<br />
+![Screenshot (95)](https://user-images.githubusercontent.com/65711565/229584712-e446c583-a468-4c98-a23f-262112973df7.png)
+
