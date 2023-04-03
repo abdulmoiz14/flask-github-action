@@ -2,8 +2,7 @@ name: CI/CD pipeline
 on:
   push:
     branches:
-      - 'main'
-      
+      - 'main'  
 jobs:
   python_build:
     needs: lint_build
