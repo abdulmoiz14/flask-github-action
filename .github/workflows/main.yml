@@ -41,7 +41,7 @@ jobs:
       - name: build image
         run: docker build . --file db/dockerfile --tag postgres_db
       - name: run image
-        run: docker run -d -p 5432:5432 --name postgres_container1 postgres_db 
+        run: docker run -d -p 5432:5432 --name postgres_container1 postgres_db sleep 100
   lint_build:
     name: Lint Code Base 
     runs-on: ubuntu-latest
