@@ -23,7 +23,7 @@ jobs:
       - name: build image
         run: docker build . --file dockerfile --tag web
       - name: run image
-        run: docker run -d --name web_container1 web
+        run: docker run  --name web_container1 web sleep 100
         
   postgres_build:
     runs-on: [self-hosted, Linux, X64, arm64]
