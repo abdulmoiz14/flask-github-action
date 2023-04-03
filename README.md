@@ -1,7 +1,7 @@
 # github action for flask python and postgress
 ## Do these steps for Continuous integration 
-**create .github/workflow/main.yml**<br />
-**edit and add event in main.yml**<br />
+### create .github/workflow/main.yml
+**edit and add event in main.yml**
 ```
 name: CI/CD pipeline
 on:
@@ -9,7 +9,7 @@ on:
     branches:
       - 'main'
 ```
-**edit in  dockerfile for flask python**
+### edit in  dockerfile for flask python.
 ```
 FROM python:3.8-slim-buster
 LABEL maintainer = "abdulmoiz1443@gmail.com"
@@ -26,7 +26,7 @@ EXPOSE 8080
 
 CMD ["python", "app.py"]
 ```
-**Add python web job in main.yml**
+### Add python web job in main.yml
 ```
 jobs:
   python_build:
@@ -47,11 +47,11 @@ jobs:
       - name: build image
         run: docker build . --file dockerfile --tag web
 ```
-**Add dockerfile for postgres and edit in it.**
+### Add dockerfile for postgres and edit in it.
 ```
 FROM postgres:13-alpine
 ```
-**Now add job for postgres.**
+### Now add postgres job in main.yml.
 ```
   postrges_build:
     runs-on: ubuntu-latest
@@ -62,10 +62,32 @@ FROM postgres:13-alpine
         with:
           postgresql_version: 'alpine3.17'
         env:
+          #use secrets to database credentials
           POSTGRES_PASSWORD: ${{ secrets.POSTGRES_PASSWORD }}
           POSTGRES_USER: ${{ secrets.POSTGRES_USER }}
           POSTGRES_DB: ${{ secrets.POSTGRES_DB }}
       - name: build image
         run: docker build . --file db/dockerfile --tag postgres_db
 ```
-****
+**Add POSTGRES_PASSWORD,POSTGRES_USER and POSTGRES_DB in secret variable of action in setting of the project repo.**
+### Use super linter job in main.yml for unit testing.
+```
+lint_built:
+    name: Lint Code Base
+    needs: python_build  
+    runs-on: ubuntu-latest
+    steps:
+      - name: Checkout Code
+        uses: actions/checkout@v3
+        with:
+          fetch-depth: 0
+      - name: Lint Code Base
+        uses: github/super-linter@v4
+        env:
+          VALIDATE_ALL_CODEBASE: false
+          DEFAULT_BRANCH: main
+          GITHUB_TOKEN: ${{ secrets.TOKEN }}
+
+```
+**Add TOKEN in secret variable of action in setting of the project repo.**
+## Do these steps for Continuous deployment
