@@ -1,4 +1,4 @@
-# github action for flask python and postgress
+# GitHub action for flask python and postgress
 ## Do these steps for Continuous integration 
 ### create .github/workflow/main.yml
 **edit and add event in main.yml**
@@ -69,7 +69,7 @@ FROM postgres:13-alpine
       - name: build image
         run: docker build . --file db/dockerfile --tag postgres_db
 ```
-**Add POSTGRES_PASSWORD,POSTGRES_USER and POSTGRES_DB in secret variable of action in setting of the project repo.**
+**Add POSTGRES_PASSWORD,POSTGRES_USER and POSTGRES_DB in secret variable of action in setting of the project repository.**
 ### Use super linter job in main.yml for unit testing.
 ```
 lint_built:
@@ -89,5 +89,5 @@ lint_built:
           GITHUB_TOKEN: ${{ secrets.TOKEN }}
 
 ```
-**Add TOKEN in secret variable of action in setting of the project repo.**
+**Add TOKEN in secret variable of action in setting of the project repository.**
 ## Do these steps for Continuous deployment
