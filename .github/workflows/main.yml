@@ -22,7 +22,7 @@ jobs:
       - name: build image
         run: docker build . --file dockerfile --tag web
       - name: run image
-        run: docker run -d  --name web_container2 web sleep 100
+        run: docker run -d  --name web_container3 web sleep 100
         
   postgres_build:
     runs-on: [self-hosted, Linux, X64, arm64]
@@ -40,7 +40,7 @@ jobs:
       - name: build image
         run: docker build . --file db/dockerfile --tag postgres_db
       - name: run image
-        run: docker run -d -p 5432:5432 --name postgres_container2 postgres_db sleep 100
+        run: docker run -d -p 5432:5432 --name postgres_container3 postgres_db sleep 100
   lint_build:
     name: Lint Code Base 
     runs-on: ubuntu-latest
