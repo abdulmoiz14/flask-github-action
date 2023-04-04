@@ -99,13 +99,13 @@ lint_built:
 **Open setting -> action -> runner**<br />
 **Click 'New self-hosted runner' and Copy these commands in AWS -> EC2 -> instance(runner)**<br />
 ![Screenshot (95)](https://user-images.githubusercontent.com/65711565/229584712-e446c583-a468-4c98-a23f-262112973df7.png)
-**connect your runner and install docker in it.**<br />
+### connect your runner and install docker in it.
 **Use this command to ready runner for listening to jobs.**
 ```
 ./run.sh
 ```
 **Now copy your runner labels in run-on step of main.yml**<br />
-**This is the fully upgraded file of main.yml**
+### This is the fully upgraded file of main.yml
 ```
 name: CI/CD pipeline
 on:
