@@ -6,10 +6,7 @@ on:
 jobs:
   python_build:
     needs: lint_build
-    runs-on: [self-hosted,arm , arm64]
-    strategy:
-      matrix:
-        runner: [arm, arm64]
+    runs-on: [self-hosted, Linux, X64, arm64]
     steps:
       - name: Checkout code
         uses: actions/checkout@v3
@@ -28,10 +25,7 @@ jobs:
         run: docker run -d  --name web_container3 web sleep 100
         
   postgres_build:
-    runs-on: [self-hosted, arm, arm64]
-    strategy:
-      matrix:
-        runner: [arm, arm64]
+    runs-on: [self-hosted, Linux, X64, arm64]
     needs: lint_build
     steps:
       - name: Checkout code
