@@ -8,6 +8,9 @@ jobs:
   python_build:
     needs: lint_build
     runs-on: [self-hosted,arm , arm64]
+    strategy:
+      matrix:
+        runner: [arm, arm64]
     steps:
       - name: Checkout code
         uses: actions/checkout@v3
@@ -27,6 +30,9 @@ jobs:
         
   postgres_build:
     runs-on: [self-hosted, arm, arm64]
+    strategy:
+      matrix:
+        runner: [arm, arm64]
     needs: lint_build
     steps:
       - name: Checkout code
